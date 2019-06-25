@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>clipboard</title>
+	<script src="js/clipboard.min.js"></script>
+
+	<style>
+		.all{overflow: hidden;}
+		.all > div{ margin-bottom: 10px; width: calc(50% - 40px); height: 90px; float: left; border: 1px solid pink; padding: 10px;}
+		.all > div:nth-child(2n){margin-left: 20px;}
+		b{display: block; margin-bottom: 5px;}
+		.result{width: 50%; background-color: pink; padding: 10px;}
+		.result textarea{width: calc(100% - 10px);}
+	</style>
+</head>
+<body>
+	<div class="all">
+		<div>
+			<b>target-input(copy)：</b>
+			<input id="target_input_copy" type="text" value="target-input copy text">
+		    <button class="clip_button" data-clipboard-action="copy" data-clipboard-target="#target_input_copy">Copy target input</button>
+	    </div>
+
+		<div>
+		    <b>target-input(cut)：</b>
+			<input id="target_input_cut" type="text" value="target-input cut text">
+		    <button class="clip_button" data-clipboard-action="cut" data-clipboard-target="#target_input_cut">cut target input</button>
+	    </div>
+
+		<div>
+			<b>target-textarea(copy):</b>
+			<textarea id="target_textarea_copy">target-textarea copy text</textarea>
+		    <button class="clip_button" data-clipboard-action="copy" data-clipboard-target="#target_textarea_copy">copy target textarea</button>
+	    </div>
+
+		<div>
+			<b>target-textarea(cut):</b>
+			<textarea id="target_textarea_cut">target-textarea cut text</textarea>
+		    <button class="clip_button" data-clipboard-action="cut" data-clipboard-target="#target_textarea_cut">cut target textarea</button>
+	    </div>
+
+		<div>
+			<b>target-div(复制第一个div的内容):</b>
+			<div>hello world</div>
+			<div>hello clipboard</div>
+		    <button class="clip_button" data-clipboard-action="copy" data-clipboard-target="div">copy target div</button>
+	    </div>
+
+		<div>
+			<b>function-text:</b>
+		    <button class="clip_button_fun_text">copy function-text</button>
+	    </div>
+
+		<div>
+			<b>function-target:</b>
+		    <button class="clip_button_fun_text">copy function-target</button>
+	    </div>
+
+		<div>
+			<b>constructor-selector：</b>
+			<button class="clip_button" data-clipboard-text="constructor-selector text">constructor-selector</button>
+		</div>
+
+		<div>
+			<b>constructor-nodelist：</b>
+			<button data-clipboard-text="constructor-nodelist text1" class="clip_button_node">Copy constructor-nodelist</button>
+		    <button data-clipboard-text="constructor-nodelist text2" class="clip_button_node">Copy constructor-nodelist</button>
+		    <button data-clipboard-text="constructor-nodelist text3" class="clip_button_node">Copy constructor-nodelist</button>
+	    </div>
+	</div>
+
+	<div class="result">
+	    <b>可在此测试复制的内容：</b>
+		<textarea name="" id="" cols="30" rows="10"></textarea>
+	</div>
+
+	<script>
+		var clipboard = new Clipboard('.clip_button');
+
+	    clipboard.on('success', function(e) {
+	        var copy_str = e.text;
+	        alert("复制内容为："+ copy_str);
+	    });
+
+	    clipboard.on('error', function(e) {
+	        var copy_str = e.trigger.getAttribute("data-clipboard-text");
+	        alert("复制失败，请手动复制以下内容："+ copy_str);
+	    });
+
+	    var clipboard_fun_text = new Clipboard('.clip_button_fun_text', {
+	        text: function() {
+	            return 'to be or not to be';
+	        }
+	    });
+
+	    clipboard_fun_text.on('success', function(e) {
+	        var copy_str = e.text;
+	        alert("复制内容为："+ copy_str);
+	    });
+
+	    clipboard_fun_text.on('error', function(e) {
+	        var copy_str = e.trigger.getAttribute("data-clipboard-text");
+	        alert("复制失败，请手动复制以下内容："+ copy_str);
+	    });
+
+	    var clipboard_fun_target = new Clipboard('.clip_button_fun_target', {
+	        target: function() {
+	            return 'to be or not to be';
+	        }
+	    });
+
+	    clipboard_fun_target.on('success', function(e) {
+	        var copy_str = e.text;
+	        alert("复制内容为："+ copy_str);
+	    });
+
+	    clipboard_fun_target.on('error', function(e) {
+	        var copy_str = e.trigger.getAttribute("data-clipboard-text");
+	        alert("复制失败，请手动复制以下内容："+ copy_str);
+	    });
+
+	    var nodeList = document.getElementsByClassName('clip_button_node');
+	    var clipboard_fun_node = new Clipboard(nodeList);
+
+	    clipboard_fun_node.on('success', function(e) {
+	        var copy_str = e.text;
+	        alert("复制内容为："+ copy_str);
+	    });
+
+	    clipboard_fun_node.on('error', function(e) {
+	        var copy_str = e.trigger.getAttribute("data-clipboard-text");
+	        alert("复制失败，请手动复制以下内容："+ copy_str);
+	    });
+	</script>
+</body>
+</html>
